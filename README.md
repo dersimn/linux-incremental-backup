@@ -71,3 +71,7 @@ The script attaches a `_longterm` suffix for backups created on the last Sunday 
 
 to remove folders not ending with `_longterm`.  
 You may want to check with `... | xargs echo` which folders are going to be removed.
+
+## See also
+
+<https://github.com/laurent22/rsync-time-backup>
