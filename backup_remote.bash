@@ -5,7 +5,7 @@ targets="/ /boot /boot/efi"
 
 remote_ip="10.30.51.11"
 rsyncaddr="rsync://test@10.30.51.11/volume"
-rsyncpw="test"
+export RSYNC_PASSWORD="test"
 sshaddr="root@10.30.51.11"
 remote_backput_dest="/mnt/backup"
 
@@ -60,10 +60,6 @@ fi
 
 pushover "Starting backup process" "-2"
 
-tmp_pwfile=$(mktemp)
-echo ${rsyncpw} > ${tmp_pwfile}
-tmp_logdir=$(mktemp -d)
-
 rsync -a \
     --stats \
     --partial \
@@ -76,7 +72,6 @@ rsync -a \
     --log-file=${tmp_logdir}/${date}.log \
     --exclude='/media/**' --exclude='/mnt/**' --exclude='/proc/**' --exclude='/sys/**' --exclude='/tmp/**' --exclude='/run/**' --exclude='/dev/**' \
     --link-dest=../latest \
-    --password-file ${tmp_pwfile} \
     ${targets} ${rsyncaddr}/incomplete_${date} \
     && ssh ${sshaddr} \
         "cd ${remote_backput_dest} \
